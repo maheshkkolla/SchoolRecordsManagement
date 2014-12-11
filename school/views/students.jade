@@ -1,0 +1,11 @@
+html
+ head
+  title Students
+ body
+  h2 Students List
+  each grade in list
+   a(href="/grade/#{grade.id}") #{grade.name}
+   ul
+    each student in grade.students
+     li 
+      a(href="/student/#{student.id}") #{student.name}
