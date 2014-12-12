@@ -1,0 +1,29 @@
+html
+ head
+  title #{grade.name}
+ body
+  h1 Grade Summary
+  form
+   |Name:&nbsp;
+   input(type='textbox',value='#{grade.name}',name='gradeName')
+   button(type='submit' onclick="javascript:form.action='/updateGradeName/#{grade.id}'") Save Name
+  |Students:
+  ul
+   each student in grade.students
+    li 
+     a(href="/student/#{student.id}") #{student.name}
+  form
+   |Name:&nbsp
+   input(type='textbox' name='studentName')
+   button(type='submit' onclick="javascript:form.action='/addStudent/#{grade.id}'") Add Student
+  |Subjects:
+  ul
+   each subject in grade.subjects
+    li 
+     a(href="/subject/#{subject.id}") #{subject.name}
+  form
+   |Name:&nbsp
+   input(type='textbox' name='subjectName')
+   |&nbsp;&nbsp;Max Score:&nbsp;
+   input(type='textbox' name='maxScore')
+   button(type='submit' onclick="javascript:form.action='/addSubject/#{grade.id}'") Add Subject

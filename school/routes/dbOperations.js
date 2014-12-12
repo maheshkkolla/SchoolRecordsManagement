@@ -53,3 +53,38 @@ dbOperations.getAllStudentsListByGrade = function(callback,testDBLocation){
 	closeDBConnection(db);
 }
 
+dbOperations.getGradeByGradeId = function(gradeId,callback,testDBLocation){
+	var gradeQry = new JsSql();
+	gradeQry.select();
+	gradeQry.from(['grades']);
+	gradeQry.where(["id='"+gradeId+"'"]);
+	var db = openDBConnection(testDBLocation || location);
+	gradeQry.ready(db,"get",callback);
+	gradeQry.fire();
+	closeDBConnection(db);
+}
+
+dbOperations.getSubjectsByGrade = function(grade,callback,testDBLocation){
+	var subjectQry = new JsSql();
+	subjectQry.select();
+	subjectQry.from('subjects');
+	var db = openDBConnection(testDBLocation || location);
+	subjectQry.ready(db,"all",callback);
+	subjectQry.fire();
+	closeDBConnection(db);
+}
+
+dbOperations.getGradeSummary = function(gradeId,callback,testDBLocation){
+	dbOperations.getGradeByGradeId(gradeId,function(err,grade){
+		if(err){callback(err)}
+		else{
+			dbOperations.getStudentDetailsByGrade(gradeId,function(err,students){
+				grade.students = students;
+				dbOperations.getSubjectsByGrade(gradeId,function(err,subjects){
+					grade.subjects = subjects;
+					callback(null,grade);
+				},testDBLocation);
+			},testDBLocation);
+		}
+	},testDBLocation);
+}

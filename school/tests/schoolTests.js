@@ -50,11 +50,43 @@ describe('Library Records',function(){
 		});
 	});
 
+	describe("getGradeByGradeId",function(){
+		it("should give the grade id and grade name of a paticular grade id",function(done){
+			dbOperations.getGradeByGradeId(1,function(err,grade){
+				assert.notOk(err);
+				assert.deepEqual(grade,{id: 1, name: 'class 1'});
+				done();
+			},location);
+		});
+	});
+
+	describe("getSubjectsByGrade",function(){
+		it("should give all subject details to the given grade id",function(done){
+			dbOperations.getSubjectsByGrade(1,function(err,subjects){
+				assert.notOk(err);
+				assert.deepEqual(subjects,[
+					{id: 1, name: 'Cricket', maxScore: 100, grade_id: 1},
+					{id: 2, name: 'Hockey', maxScore: 50, grade_id: 1},
+					{id: 3, name: 'KhoKho', maxScore: 25, grade_id: 1}]);
+				done();
+			},location);
+		});
+	});
+
 	describe("getGradeSummary",function(){
 		it("should give the details of a particular grade by grade id",function(done){
 			dbOperations.getGradeSummary(1,function(err,list){
 				assert.notOk(err);
-				console.log(list);
+				assert.equal(list.id,1);
+				assert.equal(list.name,'class 1');
+				assert.deepEqual(list.students,[
+					{'id': 1, 'name': 'Vishnu', 'grade_id': 1},
+					{'id': 2, 'name': 'Mahesh', 'grade_id': 1},
+					{'id': 3, 'name': 'Parmatma', 'grade_id': 1}]);
+				assert.deepEqual(list.subjects,[
+					{id: 1, name: 'Cricket', maxScore: 100, grade_id: 1},
+					{id: 2, name: 'Hockey', maxScore: 50, grade_id: 1},
+					{id: 3, name: 'KhoKho', maxScore: 25, grade_id: 1}]);
 				done();
 			},location);
 		});

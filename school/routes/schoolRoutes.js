@@ -10,3 +10,17 @@ schoolRoutes.getStudentsList = function(req,res,next){
 	});
 }
 
+
+schoolRoutes.getGradeSummary = function(req,res,next){
+	var gradeId = req.params.id;
+	dbOperations.getGradeSummary(gradeId,function(err,grade){
+		if(err){}
+		else res.render("grade",{grade:grade});
+	});
+}
+
+
+
+
+
+
