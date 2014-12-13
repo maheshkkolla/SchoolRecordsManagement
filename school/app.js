@@ -29,6 +29,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.get("/students",schoolRoutes.getStudentsList);
 app.get("/grade/:id",schoolRoutes.getGradeSummary);
+app.get("/student/:id",schoolRoutes.getStudentSummary);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

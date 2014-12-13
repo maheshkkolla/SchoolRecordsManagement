@@ -1,8 +1,8 @@
-var dbOperations = require('../routes/dbOperations.js').dbOperations;
+var dbOperations = require('../routes/dbOperations.js').Create('./tests/data/school.db');
 var assert = require('chai').assert;
 var fs = require('fs');
 var dbFileData = fs.readFileSync('./tests/data/schoolBackUp.db') 
-var location = "./tests/data/school.db";
+// var location = "./tests/data/school.db";
 
 describe('Library Records',function(){
 	beforeEach(function(){
@@ -17,7 +17,7 @@ describe('Library Records',function(){
 					{'id': 1, 'name': 'class 1'},
 					{'id': 2, 'name': 'class 2'}]);
 				done();
-			},location);
+			});
 		});
 	});
 
@@ -30,7 +30,7 @@ describe('Library Records',function(){
 					{'id': 2, 'name': 'Mahesh', 'grade_id': 1},
 					{'id': 3, 'name': 'Parmatma', 'grade_id': 1}]);
 				done();
-			},location);
+			});
 		});
 	});
 
@@ -46,7 +46,7 @@ describe('Library Records',function(){
 					{'id': 3, 'name': 'Parmatma', 'grade_id': 1}]);
 				assert.deepEqual(list[1].students,[]);
 				done();
-			},location);
+			});
 		});
 	});
 
@@ -56,7 +56,7 @@ describe('Library Records',function(){
 				assert.notOk(err);
 				assert.deepEqual(grade,{id: 1, name: 'class 1'});
 				done();
-			},location);
+			});
 		});
 	});
 
@@ -69,12 +69,12 @@ describe('Library Records',function(){
 					{id: 2, name: 'Hockey', maxScore: 50, grade_id: 1},
 					{id: 3, name: 'KhoKho', maxScore: 25, grade_id: 1}]);
 				done();
-			},location);
+			});
 		});
 	});
 
 	describe("getGradeSummary",function(){
-		it("should give the details of a particular grade by grade id",function(done){
+		it("should give the summary of a particular grade by grade id",function(done){
 			dbOperations.getGradeSummary(1,function(err,list){
 				assert.notOk(err);
 				assert.equal(list.id,1);
@@ -88,7 +88,27 @@ describe('Library Records',function(){
 					{id: 2, name: 'Hockey', maxScore: 50, grade_id: 1},
 					{id: 3, name: 'KhoKho', maxScore: 25, grade_id: 1}]);
 				done();
-			},location);
+			});
+		});
+	});
+	describe("getStudentSummary",function(){
+		it("should give the summary of a particular student by student id",function(done){
+			dbOperations.getStudentSummary(2,function(err,student){
+				assert.notOk(err);
+				assert.equal(student.id,2);
+				assert.equal(student.name,'Mahesh');
+				done();
+			});
+		});
+	});
+	describe("getStudentById",function(){
+		it("should give the student details such as id, name by student id",function(done){
+			dbOperations.getStudentById(1,function(err,student){
+				assert.notOk(err);
+				assert.equal(student.id,1);
+				assert.equal(student.name,"Vishnu");
+				done();
+			});
 		});
 	});
 });
