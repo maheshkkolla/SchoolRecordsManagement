@@ -112,4 +112,21 @@ describe('Library Records',function(){
 			});
 		});
 	});
+
+	describe("getSubjectSummary",function(){
+		it("should give the subject summary by subject id",function(done){
+			dbOperations.getSubjectSummary(1,function(err,summary){
+				assert.notOk(err);
+				assert.lengthOf(summary,3);
+				assert.equal(summary[0].subjectName,"Cricket");
+				assert.deepEqual(summary[2], {subjectId: 1,gradeName: 'class 1',
+					subjectName: 'Cricket', maxScore: 100,gradeId: 1, 
+					studentId: 3, score: 8, studentName: 'Parmatma'});
+				assert.deepEqual(summary.grades,[
+					{'id': 1, 'name': 'class 1'},
+					{'id': 2, 'name': 'class 2'}]);
+				done();
+			});
+		});
+	});
 });

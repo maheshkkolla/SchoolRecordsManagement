@@ -114,7 +114,6 @@ dbOperations.getStudentSummary = function(st_id,callback){
 	studentQry.ready(db,"all",function(err,student){
 		dbOperations.getGrades(function(err,grades){
 			student.grades = grades;
-			console.log(student)
 			callback(null,student);
 		});
 	});
@@ -122,3 +121,20 @@ dbOperations.getStudentSummary = function(st_id,callback){
 	closeDBConnection(db);
 }
 
+dbOperations.getSubjectSummary = function(sub_id,callback){
+	var subjectQry = new JsSql();
+	subjectQry.select(["sb.id","sb.name","sb.maxScore","sb.grade_id","sc.student_id","sc.score","st.name","g.name"])
+		.as(["subjectId","subjectName","maxScore","gradeId","studentId","score","studentName","gradeName"]);
+	subjectQry.from(["subjects sb","scores sc","students st","grades g"]);
+	subjectQry.where(["sb.id='"+sub_id+"'","sc.subject_id=sb.id","st.id=sc.student_id","g.id=sb.grade_id"])
+		.connectors(["AND","AND","AND"]);
+	var db = openDBConnection(location);
+	subjectQry.ready(db,"all",function(err,subject){
+		dbOperations.getGrades(function(err,grades){
+			subject.grades = grades;
+			callback(null,subject);
+		});
+	});
+	subjectQry.fire();
+	closeDBConnection(db);
+}

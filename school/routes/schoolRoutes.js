@@ -27,7 +27,15 @@ schoolRoutes.getStudentSummary = function(req,res,next){
 	});
 }
 
-
+schoolRoutes.getSubjectSummary = function(req,res,next){
+	var subjectId = req.params.id;
+	dbOperations.getSubjectSummary(subjectId,function(err,summary){
+		if(err){}
+		else{
+			res.render("subject",{summary: summary});
+		}
+	});
+}
 
 
 
