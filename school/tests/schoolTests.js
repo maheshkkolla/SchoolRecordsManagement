@@ -95,8 +95,9 @@ describe('Library Records',function(){
 		it("should give the summary of a particular student by student id",function(done){
 			dbOperations.getStudentSummary(2,function(err,student){
 				assert.notOk(err);
-				assert.equal(student.id,2);
-				assert.equal(student.name,'Mahesh');
+				assert.lengthOf(student,3);
+				assert.deepEqual(student[0],{studentId: 2, studentName: 'Mahesh',gradeId: 1, gradeName: 'class 1', 
+					subjectId: 3, subjectName: 'KhoKho', maxScore: 25, score: 11 });
 				done();
 			});
 		});

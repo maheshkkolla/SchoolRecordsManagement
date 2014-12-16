@@ -21,9 +21,9 @@ schoolRoutes.getGradeSummary = function(req,res,next){
 
 schoolRoutes.getStudentSummary = function(req,res,next){
 	var studentId = req.params.id;
-	dbOperations.getStudentSummary(studentId,function(err,student){
+	dbOperations.getStudentSummary(studentId,function(err,summary){
 		if(err){}
-		else res.render("student",{student: student});
+		else res.render("student",{summary: summary});
 	});
 }
 

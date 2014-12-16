@@ -102,13 +102,23 @@ dbOperations.getStudentById = function(studentId,callback){
 	closeDBConnection(db);
 }
 
-dbOperations.getStudentSummary = function(studentId,callback){
-	var conditions = ["st.id='"+ studentId+"'",]
+dbOperations.getStudentSummary = function(st_id,callback){
+	// var conditions = ["st.id='"+ st_id+"'",]
 	var studentQry = new JsSql();
 	studentQry.select(["st.id","st.name","st.grade_id","g.name","sb.id","sb.name","sb.maxScore","sc.score"])
 		.as(["studentId","studentName","gradeId","gradeName","subjectId","subjectName","maxScore","score"]);
-	studentQry.from(["students s","grades g","subjects sb","scores sc"]);
-	studentQry.where()
-	console.log(studentQry.query)
+	studentQry.from(["students st","grades g","subjects sb","scores sc"]);
+	studentQry.where(["st.id='"+st_id+"'","g.id=st.grade_id","sb.grade_id=st.grade_id","sc.student_id=st.id",
+		"sc.subject_id=sb.id"]).connectors(["AND","AND","AND","AND"]);
+	var db = openDBConnection(location);
+	studentQry.ready(db,"all",function(err,student){
+		dbOperations.getGrades(function(err,grades){
+			student.grades = grades;
+			console.log(student)
+			callback(null,student);
+		});
+	});
+	studentQry.fire();
+	closeDBConnection(db);
 }
 

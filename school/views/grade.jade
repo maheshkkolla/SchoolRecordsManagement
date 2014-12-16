@@ -6,7 +6,7 @@ html
   form
    |Name:&nbsp;
    input(type='textbox',value='#{grade.name}',name='gradeName')
-   button(type='submit' onclick="javascript:form.action='/updateGradeName/#{grade.id}'") Save Name
+   button(type='submit' onclick="javascript:form.action='/updateGradeName/#{grade.id}'") Change Name
   |Students:
   ul
    each student in grade.students
